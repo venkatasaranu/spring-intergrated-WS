@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:int-ws="http://www.springframework.org/schema/integration/ws"
+	xmlns:web-services="http://www.springframework.org/schema/web-services"
+	xsi:schemaLocation="http://www.springframework.org/schema/integration/ws http://www.springframework.org/schema/integration/ws/spring-integration-ws.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/web-services http://schema.spring.io/web-services/web-services-2.0.xsd">
+ 
+ 
+	<int-ws:inbound-gateway id="employeeServiceGateway" request-channel="requestChannel" 
+		marshaller="marshaller" unmarshaller="marshaller"/>
+		
+	<int:channel id="requestChannel"/>
+	
+	<int:service-activator input-channel="requestChannel">
+		<bean class="com.epsilon.employee.service.EmployeeServiceImpl"/>
+	</int:service-activator>
+	
+	<bean id="marshaller"
+		class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="contextPath" value="com.epsilon.employee.service.domain"/>
+	</bean>
+	
+	<web-services:dynamic-wsdl id="employeeService" 
+		portTypeName="employeeServiceGateway" locationUri="/EmployeeService">
+		<web-services:xsd location="/WEB-INF/xsd/employeeservice.xsd"/>
+	</web-services:dynamic-wsdl>
+ 
+	<bean
+		class="org.springframework.ws.server.endpoint.mapping.UriEndpointMapping">
+		<property name="defaultEndpoint" ref="employeeServiceGateway"/>
+	</bean>
+	
+</beans>

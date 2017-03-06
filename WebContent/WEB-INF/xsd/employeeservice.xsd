@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.example.org/employeeservice" xmlns:tns="http://www.example.org/employeeservice"
+	elementFormDefault="qualified">
+	<xsd:element name="GetChildrenRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="emp" type="tns:Employee" minOccurs="1" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="Employee">
+		<xsd:sequence minOccurs="1">
+			<xsd:element name="empno" type="xsd:int" />
+			<xsd:element name="ename" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="GetChildrenResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="children" type="tns:Child" minOccurs="1"
+					maxOccurs="unbounded" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="Child">
+		<xsd:sequence minOccurs="1">
+			<xsd:element name="stdno" type="xsd:int" />
+			<xsd:element name="childname" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>
